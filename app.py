@@ -7,9 +7,7 @@ app.config["image_upload"] = "./img"
 
 allowed_extensions = set(['png', 'jpg', 'jpge']) #Objeto iterable de strings
 
-@app.route("/")
-def home():
-    return Hola
+
 
 def allowed_file(filename): 
     """ 
@@ -18,6 +16,11 @@ def allowed_file(filename):
         - Retorna True o False
     """
     return '.' in filename and filename.rsplit('.', 1)[1] in allowed_extensions
+
+
+@app.route("/")
+def home():
+    return "Hola"
 
 @app.route("/upload-image", methods = ["GET", "POST"])
 def upload_image(): 
