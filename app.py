@@ -7,6 +7,10 @@ app.config["image_upload"] = "./img"
 
 allowed_extensions = set(['png', 'jpg', 'jpge']) #Objeto iterable de strings
 
+@app.route("/")
+def home():
+    return Hola
+
 def allowed_file(filename): 
     """ 
         Se valida que la extención del archivo este dentro de las 
@@ -32,7 +36,7 @@ def upload_image():
                 
                 if allowed_file(filename): 
                     img.save(os.path.join(app.config["image_upload"], filename))
-                    return <h1>Almacenamiento exitoso<h1>
+                    return redirect(url_for("get_image", filename=filename))
                 
                 return make_response(jsonify({ 'error': 'formato u extension de imagen no soportado'}), 400)
             
