@@ -32,7 +32,7 @@ def upload_image():
                 
                 if allowed_file(filename): 
                     img.save(os.path.join(app.config["image_upload"], filename))
-                    return redirect(url_for("get_image", filename=filename))
+                    return <h1>Almacenamiento exitoso<h1>
                 
                 return make_response(jsonify({ 'error': 'formato u extension de imagen no soportado'}), 400)
             
