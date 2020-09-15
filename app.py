@@ -1,8 +1,9 @@
 import os
 from flask import Flask, request, redirect, make_response, jsonify, url_for, send_from_directory
 
+
 app = Flask(__name__)
-app.config["image_upload"] = os.path.abspath("img")
+app.config["image_upload"] = "./img"
 
 allowed_extensions = set(['png', 'jpg', 'jpge']) #Objeto iterable de strings
 
