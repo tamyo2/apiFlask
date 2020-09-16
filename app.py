@@ -1,12 +1,9 @@
 import os
 from flask import Flask, request, redirect, make_response, jsonify, url_for, send_from_directory, abort, render_template
-from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['image_upload'] = "./img"
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:1@localhost/prueba'
-#app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-#db = SQLAlchemy(app)
+
 
 allowed_extensions = set(['png', 'jpg', 'jpge']) #Objeto iterable de strings
 
