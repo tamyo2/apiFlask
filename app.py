@@ -1,13 +1,14 @@
 import os
-from flask import Flask, request, redirect, make_response, jsonify, url_for, send_from_directory
-
+from flask import Flask, request, redirect, make_response, jsonify, url_for, send_from_directory, abort, render_template
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config["image_upload"] = "./img"
+app.config['image_upload'] = "./img"
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:1@localhost/prueba'
+#app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+#db = SQLAlchemy(app)
 
 allowed_extensions = set(['png', 'jpg', 'jpge']) #Objeto iterable de strings
-
-
 
 def allowed_file(filename): 
     """ 
@@ -16,7 +17,6 @@ def allowed_file(filename):
         - Retorna True o False
     """
     return '.' in filename and filename.rsplit('.', 1)[1] in allowed_extensions
-
 
 @app.route("/")
 def home():
@@ -35,11 +35,11 @@ def upload_image():
         
         if  request.files:
                 img = request.files['image']
-                filename = img.filename
-                
-                if allowed_file(filename): 
-                    img.save(os.path.join(app.config["image_upload"], filename))
-                    return redirect(url_for("get_image", filename=filename))
+        
+                if img and allowed_file(img.filename): 
+                    filename = img.filename
+                    img.save(os.path.join(app.config['image_upload'], filename))
+                    return redirect(url_for("get_image", img_name=filename))
                 
                 return make_response(jsonify({ 'error': 'formato u extension de imagen no soportado'}), 400)
             
@@ -52,15 +52,16 @@ def upload_image():
                 </form>
             """
             
-@app.route("/upload-image/<filename>")
-def get_image(filename):
+@app.route("/upload-image/<img_name>")
+def get_image(img_name):
     """  
         Busca en el dir configurado el archivo que concuerde con el nombre 
         suministrada como parametro de entrada. Si el archivo esta almacenado,
         es renderizado en el navegador
     """
-    return   send_from_directory(app.config["image_upload"], filename)
- 
+    return send_from_directory(app.config['image_upload'], img_name)
+    
  
 if __name__ == "__main__": 
     app.run(debug= True)
+
